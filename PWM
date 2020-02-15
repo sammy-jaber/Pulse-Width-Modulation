@@ -1,0 +1,44 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.numeric_std.ALL;
+
+entity PWM is
+   generic(res : integer := 8; freq : integer := 10);
+   port(
+      RST     : in std_logic;
+      CLK     : in std_logic; -- system clock = 100MHz
+      DUTY    : in std_logic_vector(res - 1 downto 0);
+      PWM_OUT : out std_logic
+      );
+end PWM;
+
+Architecture Structural of PWM is
+  -----------------------------------------------------------------------------
+  -- Declare Timer Component
+  -----------------------------------------------------------------------------
+    Component Timer is generic(Ticks : integer :=10); -- timer component 
+        port(
+        RST : in std_logic;
+        CLK : in std_logic;
+        eot : out std_logic);
+    end Component;
+  -----------------------------------------------------------------------------
+  -- Declare Counter Component
+  -----------------------------------------------------------------------------
+    Component Counter is generic(busWidth : integer := 8); -- counter component
+        port(
+        RST : in std_logic;
+        CLK : in std_logic;
+        INC : in std_logic;
+        CNT : out std_logic_vector(busWidth - 1 downto 0));
+    end Component;
+  -----------------------------------------------------------------------------
+  -- Internal Signals
+  -----------------------------------------------------------------------------
+signal SYN : std_logic;
+signal CNT : std_logic_vector (res - 1 downto 0);
+begin
+ PWM_OUT <= '1' when DUTY > CNT else '0';
+ U01 : Timer generic map(1e8/(freq * 2**res)) port map(RST, CLK, syn);
+ U02 : counter generic map(res) port map(RST, CLK, syn, CNT);
+ end Structural;
