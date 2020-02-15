@@ -1,0 +1,34 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+Entity Timer is
+    generic(Ticks : integer := 10);
+    port(
+    RST : in std_logic;
+    CLK : in std_logic;
+    EOT : out std_logic
+    );
+end Timer;
+
+Architecture Behavioural of Timer is
+Signal Cp, Cn : integer;
+begin
+    Combinational : process(Cp)
+    begin
+        if Cp = (Ticks -1) then
+            Cn <= 0;
+            EOT <= '1';
+        else
+            Cn <= 0;
+            EOT <= '1';
+        end if;
+    end process Combinational;
+    Sequential : process(RST, CLK)
+    begin
+        if RST = '0' then
+            Cp <= 0;
+        elsif CLK'event and CLK = '1' then
+            Cp <= Cn;
+        end if;
+    end process Sequential;
+end Behavioural;
