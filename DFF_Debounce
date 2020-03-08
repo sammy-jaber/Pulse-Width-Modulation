@@ -1,0 +1,21 @@
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+ENTITY  DFF_button IS
+PORT  ( 
+    CLK : IN STD_LOGIC;
+    en	: IN STD_LOGIC;
+    D 	: IN STD_LOGIC;
+    Q 	: OUT STD_LOGIC
+    );
+END  DFF_button;
+ARCHITECTURE  Arch OF  DFF_button IS
+BEGIN
+PROCESS(CLK)
+BEGIN
+	if (rising_edge(CLK)) THEN
+		if (en = '1') THEN
+			Q <= D;
+		END IF;
+	END IF;
+END PROCESS;
+END Arch;
